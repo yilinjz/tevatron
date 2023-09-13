@@ -78,13 +78,13 @@ def main():
 
     train_dataset = HFTrainDataset(tokenizer=tokenizer, data_args=data_args,
                                    cache_dir=data_args.data_cache_dir or model_args.cache_dir)
-    if training_args.local_rank > 0:
-        print("Waiting for main process to perform the mapping")
-        torch.distributed.barrier()
+    # if training_args.local_rank > 0:
+    #     print("Waiting for main process to perform the mapping")
+    #     torch.distributed.barrier()
     train_dataset = RerankerTrainDataset(data_args, train_dataset.process(), tokenizer)
-    if training_args.local_rank == 0:
-        print("Loading results from main process")
-        torch.distributed.barrier()
+    # if training_args.local_rank == 0:
+    #     print("Loading results from main process")
+    #     torch.distributed.barrier()
 
     trainer = RerankerTrainer(
         model=model,
